@@ -18,7 +18,7 @@ class EPDOTest extends TestCase {
 	}
 	
 	function tearDown() {
-		#unlink(__DIR__."/testing.sqlite");
+		unlink(__DIR__."/testing.sqlite");
 	}
 	
 	function getEPDO(): EPDO {
@@ -164,21 +164,21 @@ class EPDOTest extends TestCase {
 		$this->assertEquals($expected, $this->getValues());
 	}
 	
-	function testRead() {
+	function testRow() {
 		$expected = $this->getExpected();
-		$read = $this->getEPDO()->read("select * from politician where id = ?", array(1));
+		$read = $this->getEPDO()->row("select * from politician where id = ?", array(1));
 		$this->assertEquals($expected[0], $read);
 	}
 	
-	function testReadAmbiguous() {
+	function testRowAmbiguous() {
 		$expected = $this->getExpected();
 		$this->expectException(PDOException::class);
 		$this->expectExceptionMessage("Result is ambiguous (2)");
-		$read = $this->getEPDO()->read("select * from politician where sex = ?", array("m"));
+		$read = $this->getEPDO()->row("select * from politician where sex = ?", array("m"));
 	}
 
-	function testReadEmpty() {
-		$read = $this->getEPDO()->read("select * from politician where id = ?", array(10));
+	function testRowEmpty() {
+		$read = $this->getEPDO()->row("select * from politician where id = ?", array(10));
 		$this->assertEquals(array(), $read);
 	}
 
