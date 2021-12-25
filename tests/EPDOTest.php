@@ -13,11 +13,11 @@ use PHPUnit\Framework\TestCase;
  * @author hm
  */
 class EPDOTest extends TestCase {
-	function setUp() {
+	function setUp(): void {
 		copy(__DIR__."/epdo.sqlite", __DIR__."/testing.sqlite");
 	}
 	
-	function tearDown() {
+	function tearDown(): void {
 		unlink(__DIR__."/testing.sqlite");
 	}
 	
