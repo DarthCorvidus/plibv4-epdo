@@ -74,7 +74,7 @@ class EPDO extends PDO {
 			$where[] = $key." = ?";
 			$param[] = $value;
 		}
-		$update .= implode($where, " AND ");
+		$update .= implode(" AND ", $where);
 		$stmt = $this->prepare($update);
 		$stmt->execute($param);
 	}
@@ -100,7 +100,7 @@ class EPDO extends PDO {
 			$where[] = $key." = ?";
 			$param[] = $value;
 		}
-		$delete .= implode($where, " AND ");
+		$delete .= implode(" AND ", $where);
 		$stmt = $this->prepare($delete);
 		$stmt->execute($param);
 	}
