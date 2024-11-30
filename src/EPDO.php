@@ -139,7 +139,7 @@ class EPDO extends PDO {
 	 * than one row.
 	 * @param string $sql
 	 * @param array $params
-	 * @return type
+	 * @return mixed
 	 * @throws PDOException
 	 */
 	function result(string $sql, array $params) {
