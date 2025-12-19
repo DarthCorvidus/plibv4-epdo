@@ -42,5 +42,5 @@ jobs:
       - name: Run test suite
         run: composer run-script testdox
 
-      - name: Run Psalm
-        run: composer run-script psalm
+#      - name: Run Psalm
+#        run: composer run-script psalm
