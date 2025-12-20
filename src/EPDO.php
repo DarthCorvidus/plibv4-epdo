@@ -26,9 +26,9 @@ class EPDO extends PDO {
 	 * @param string $table
 	 * @param array $array Associative array containing columns as keys and values. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
 	 * @param string $sequence Sequence name where needed (eg. PostgreSQL)
-	 * @return int Insert Id
+	 * @return string Insert Id (always string in PDO)
 	 */
-	function create(string $table, array $array, string $sequence = NULL): int {
+	function create(string $table, array $array, string $sequence = NULL): string {
 		$names = array();
 		$params = array();
 		$bind = array();
@@ -58,9 +58,11 @@ class EPDO extends PDO {
 	 * @param array $values Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
 	 * @param array $conditions Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
 	 */
-	function update(string $table, array $values, array $conditions) {
+	function update(string $table, array $values, array $conditions): void {
 		$update = "UPDATE ".$this->quote($table)." SET ";
 		$set = array();
+		$param = array();
+		$where = array();
 		foreach($values as $key => $value) {
 			$set[] = $key." = ?";
 			$param[] = $value;
@@ -88,7 +90,7 @@ class EPDO extends PDO {
 	 * @param string $table Table name
 	 * @param array $conditions Condition as associative array. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
 	 */
-	function delete(string $table, array $conditions) {
+	function delete(string $table, array $conditions): void {
 		$param = array();
 		$where = array();
 		$delete = "DELETE FROM ".$this->quote($table)." WHERE ";
@@ -142,7 +144,7 @@ class EPDO extends PDO {
 	 * @return mixed
 	 * @throws PDOException
 	 */
-	function result(string $sql, array $params) {
+	function result(string $sql, array $params): mixed {
 		$stmt = $this->prepare($sql);
 		$stmt->execute($params);
 		$stmt->setFetchMode(PDO::FETCH_NUM);
