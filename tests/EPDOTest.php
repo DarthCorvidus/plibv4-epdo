@@ -42,25 +42,25 @@ class EPDOTest extends TestCase {
 	
 	
 	function getExpected() {
-		$values[0]["id"] = "1";
+		$values[0]["id"] = 1;
 		$values[0]["name"] = "Angela";
 		$values[0]["surname"] = "Merkel";
 		$values[0]["sex"] = "f";
 		$values[0]["birthday"] = "1954-07-17";
 
-		$values[1]["id"] = "2";
+		$values[1]["id"] = 2;
 		$values[1]["name"] = "Emmanuel Jean-Michael Frédéric";
 		$values[1]["surname"] = "Macron";
 		$values[1]["sex"] = "f";
 		$values[1]["birthday"] = "1977-12-21";
 
-		$values[2]["id"] = "3";
+		$values[2]["id"] = 3;
 		$values[2]["name"] = "Alexander Boris";
 		$values[2]["surname"] = "de Pfeffel Johnson";
 		$values[2]["sex"] = "m";
 		$values[2]["birthday"] = "1964-06-19";
 
-		$values[3]["id"] = "4";
+		$values[3]["id"] = 4;
 		$values[3]["name"] = "Joseph Robinette";
 		$values[3]["surname"] = "Biden";
 		$values[3]["sex"] = "m";
