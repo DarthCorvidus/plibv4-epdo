@@ -24,12 +24,13 @@ class EPDO extends PDO {
 	 * columns. Do not use key names from untrusted sources.
 	 * 
 	 * @param string $table
-	 * @param array $array Associative array containing columns as keys and values. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
+	 * @param array<string, null|scalar> $array Associative array containing columns as keys and values. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
 	 * @param string $sequence Sequence name where needed (eg. PostgreSQL)
 	 * @return string Insert Id (always string in PDO)
 	 */
 	function create(string $table, array $array, string $sequence = NULL): string {
 		$names = array();
+		/** @var list<null|scalar> $params */
 		$params = array();
 		$bind = array();
 		$insert = "INSERT INTO ".$this->quote($table)." ";
@@ -55,12 +56,13 @@ class EPDO extends PDO {
 	 * arrays, where the array keys are columns. Conditions are joined by AND.
 	 * 
 	 * @param string $table Table name
-	 * @param array $values Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
-	 * @param array $conditions Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
+	 * @param array<string, null|scalar> $values Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
+	 * @param array<string, null|scalar> $conditions Associative array. DO NOT USE KEY FROM UNTRUSTED SOURCES!
 	 */
 	function update(string $table, array $values, array $conditions): void {
 		$update = "UPDATE ".$this->quote($table)." SET ";
 		$set = array();
+		/** @var list<null|scalar> $param */
 		$param = array();
 		$where = array();
 		foreach($values as $key => $value) {
@@ -88,9 +90,10 @@ class EPDO extends PDO {
 	 * keys. Multiple conditions are linked via AND. Be careful, and no don use
 	 * keys from untrusted sources.
 	 * @param string $table Table name
-	 * @param array $conditions Condition as associative array. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
+	 * @param array<string, null|scalar> $conditions Condition as associative array. DO NOT USE KEYS FROM UNTRUSTED SOURCES!
 	 */
 	function delete(string $table, array $conditions): void {
+		/** @var list<null|scalar> $param */
 		$param = array();
 		$where = array();
 		$delete = "DELETE FROM ".$this->quote($table)." WHERE ";
@@ -116,14 +119,15 @@ class EPDO extends PDO {
 	 * database design or data. Can be mitigated with LIMIT 1.
 	 * 
 	 * @param string $sql
-	 * @param array $params
-	 * @return array
+	 * @param list<null|scalar> $params
+	 * @return array<string, null|scalar>
 	 * @throws PDOException
 	 */
 	function row(string $sql, array $params): array {
 		$stmt = $this->prepare($sql);
 		$stmt->execute($params);
 		$stmt->setFetchMode(PDO::FETCH_ASSOC);
+		/** @var list<array<string, null|scalar>> $fetch */
 		$fetch = $stmt->fetchAll();
 		if(count($fetch)===0) {
 			return array();
@@ -140,16 +144,16 @@ class EPDO extends PDO {
 	 * Shorthand to return a single value; throws an exception if receiving more
 	 * than one row.
 	 * @param string $sql
-	 * @param array $params
-	 * @return mixed
+	 * @param list<null|scalar> $params
 	 * @throws PDOException
 	 */
-	function result(string $sql, array $params): mixed {
+	function result(string $sql, array $params): null|string|int|float|bool {
 		$stmt = $this->prepare($sql);
 		$stmt->execute($params);
 		$stmt->setFetchMode(PDO::FETCH_NUM);
+		/** @var list<list<null|scalar>> $fetch */
 		$fetch = $stmt->fetchAll();
-		if(empty($fetch[0])) {
+		if(!isset($fetch[0])) {
 			return NULL;
 		}
 		if(count($fetch)!==1) {
